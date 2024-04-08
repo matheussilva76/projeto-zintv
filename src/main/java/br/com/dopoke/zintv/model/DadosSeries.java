@@ -1,4 +1,4 @@
-package br.com.dopoke.model;
+package br.com.dopoke.zintv.model;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
