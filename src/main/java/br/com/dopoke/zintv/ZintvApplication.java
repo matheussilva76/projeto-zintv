@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
-public class ZintvApplication implements CommandLineRunner{
+public class ZintvApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ZintvApplication.class, args);
@@ -28,7 +28,7 @@ public class ZintvApplication implements CommandLineRunner{
 		var jsonbb = consumoAPI.obterDados("https://www.omdbapi.com/?i=tt0903747&apikey=f165582f");
 		var jsonep = consumoAPI.obterDados("https://www.omdbapi.com/?i=tt0903747&season=1&episode=2&apikey=f165582f");
 		var jsonss = consumoAPI.obterDados("https://www.omdbapi.com/?i=tt090377&season=1&episode=2&apikey=f165582f");
-		
+
 		ConverterDados conversor = new ConverterDados();
 
 		DadosSeries dados = conversor.obterDados(json, DadosSeries.class);
@@ -42,9 +42,8 @@ public class ZintvApplication implements CommandLineRunner{
 
 		List<DadosTemporada> temporadas = new ArrayList<>();
 
-
-		for (int i = 1; i<=dadosbb.totalTemporadas(); i++) {
-			json = consumoAPI.obterDados("https://www.omdbapi.com/?i=tt0903747&season=" +i+ "&apikey=f165582f");
+		for (int i = 1; i <= dadosbb.totalTemporadas(); i++) {
+			json = consumoAPI.obterDados("https://www.omdbapi.com/?i=tt0903747&season=" + i + "&apikey=f165582f");
 			DadosTemporada dadostp = conversor.obterDados(json, DadosTemporada.class);
 			temporadas.add(dadostp);
 		}
