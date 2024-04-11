@@ -1,11 +1,13 @@
 package br.com.dopoke.zintv.principal;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.sql.Array;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import br.com.dopoke.zintv.model.DadosEpisodio;
 import br.com.dopoke.zintv.model.DadosSeries;
 import br.com.dopoke.zintv.model.DadosTemporada;
+import br.com.dopoke.zintv.model.Eps;
 import br.com.dopoke.zintv.service.ConsumoAPI;
 import br.com.dopoke.zintv.service.ConverterDados;
 
@@ -37,6 +39,29 @@ public class Principal {
 		}
 		temporadas.forEach(System.out::println);
 		temporadas.forEach(t -> t.episodeos().forEach(e -> System.out.println(e.titulo())));
-	}
 
+		/*List<String> nomes = Arrays.asList("Jacque", "Theuzindopoke");
+		nomes.stream().sorted().limit(3).filter(s -> s.startsWith("T")).map(s -> s.toLowerCase()).forEach(System.out::println);*/
+
+		List<DadosEpisodio> dadosEpisodios = temporadas.stream()
+				.flatMap(t -> t.episodeos().stream())
+				.collect(Collectors.toList());
+
+		System.out.println("\n Top five episodeos");
+		dadosEpisodios.stream()
+				.filter(dadosEpisodio -> !dadosEpisodio.avaliacao().contains("N/A"))
+				.sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed())
+				.limit(5)
+				.forEach(System.out::println);
+
+		List<Eps> eps = temporadas.stream()
+				.flatMap(t -> t.episodeos().stream()
+						.filter(dadosEpisodio -> !dadosEpisodio.avaliacao().contains("N/A"))
+						.map(dadosEpisodio -> new Eps(t.numero(), dadosEpisodio))
+				).collect(Collectors.toList());
+
+		eps.forEach(System.out::println);
+
+
+	}
 }
