@@ -1,6 +1,8 @@
 package br.com.dopoke.zintv.principal;
 
 import java.sql.Array;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -58,10 +60,23 @@ public class Principal {
 				.flatMap(t -> t.episodeos().stream()
 						.filter(dadosEpisodio -> !dadosEpisodio.avaliacao().contains("N/A"))
 						.map(dadosEpisodio -> new Eps(t.numero(), dadosEpisodio))
-				).collect(Collectors.toList());
+				).toList();
 
 		eps.forEach(System.out::println);
 
+		System.out.println("A partir de que ano você deseja ver os episodeos? ");
+		var ano = leitura.next();
+		leitura.nextLine();
 
+		LocalDate dataBusca = LocalDate.of(Integer.parseInt(ano), 1, 1);
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		eps.stream()
+				.filter(e -> e.getDataLancamento() != null && e.getDataLancamento().isAfter(dataBusca))
+				.forEach(e -> System.out.println(
+						"Temporada: " + e.getTemporada() +
+								" Episodeo: " + e.getTitulo() +
+								" Data de lançamento: " + e.getDataLancamento().format(dtf)
+
+				));
 	}
 }
